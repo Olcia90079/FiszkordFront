@@ -17,15 +17,15 @@ const Navbar = () => {
         <div className="navbar__container">
           <div className="navbar__logo">Fiszkord</div>
           <div className="navbar__pages">
-            <div className="navbar__page">Page 1</div>
-            <div className="navbar__page">Page 2</div>
-            <div className="navbar__page">Page 3</div>
-            <div className="navbar__page">Page 4</div>
+            <button>Aktualności</button>
+            <button>Fiszki</button>
+            <button>Pliki</button>
+            <button>Czat</button>
           </div>
           <div className="navbar__search">
             <input
               type="text"
-              placeholder="Search"
+              placeholder="Szukaj..."
               value={searchValue}
               onChange={handleSearchChange}
             />
