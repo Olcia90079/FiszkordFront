@@ -1,0 +1,42 @@
+.navbar {
+    display: flex;
+}
+
+.sidebar {
+    width: 10%;
+    background-color: #aaaaaa;
+    padding: 20px;
+    height: 100vh;
+}
+
+.topbar {
+    background-color: #bbbbbb;
+    width: 100vw;
+    height: 100px;
+    display: flex;
+}
+
+.navbar__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.navbar__logo {
+    color: #0c073b;
+    justify-self: start;
+    margin-left: 20px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 2rem;
+}
+
+.navbar__pages {
+    align-self: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 30%;
+    margin-right: 20px;
+}
