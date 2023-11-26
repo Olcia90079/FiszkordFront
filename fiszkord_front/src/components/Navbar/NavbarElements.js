@@ -1,18 +1,31 @@
 import { FaBars } from "react-icons/fa";
 import { NavLink as Link } from "react-router-dom";
 import styled from "styled-components";
- 
+
+
+// Logo - Fiszkord które jest linkiem do strony głównej i znajduje się po lewej stronie
+
+export const Logo = styled(Link)`
+    color: #808080;
+    cursor: pointer;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    margin-left: 24px;
+    font-weight: bold;
+    text-decoration: none;
+`;
+
 export const Nav = styled.nav`
     background: #bbbbbb;
     height: 85px;
     display: flex;
     justify-content: space-between;
-    padding: 0.2rem calc((100vw - 1000px) / 2);
     z-index: 12;
     /* Third Nav */
     /* justify-content: flex-start; */
 `;
- 
+
 export const NavLink = styled(Link)`
     color: #808080;
     display: flex;
@@ -25,7 +38,7 @@ export const NavLink = styled(Link)`
         color: #000000;
     }
 `;
- 
+
 export const Bars = styled(FaBars)`
     display: none;
     color: #808080;
@@ -39,7 +52,7 @@ export const Bars = styled(FaBars)`
         cursor: pointer;
     }
 `;
- 
+
 export const NavMenu = styled.div`
     display: flex;
     align-items: center;
@@ -53,19 +66,19 @@ export const NavMenu = styled.div`
         display: none;
     }
 `;
- 
+
 export const NavBtn = styled.nav`
     display: flex;
     align-items: center;
     margin-right: 24px;
     /* Third Nav */
-    /* justify-content: flex-end;
-  width: 100vw; */
+    justify-content: flex-end;
+    width: 100vw;
     @media screen and (max-width: 768px) {
         display: none;
     }
 `;
- 
+
 export const NavBtnLink = styled(Link)`
     border-radius: 4px;
     background: #808080;

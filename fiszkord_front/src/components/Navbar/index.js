@@ -6,25 +6,31 @@ import {
     NavMenu,
     NavBtn,
     NavBtnLink,
+    Logo,
 } from "./NavbarElements";
- 
+
 const Navbar = () => {
     return (
         <>
             <Nav>
                 <Bars />
- 
+
+                <Logo to="/">
+                    Fiszkord
+                </Logo>
+
                 <NavMenu>
-                    <NavLink to="/aktualnosci" >
+                    
+                    <NavLink to="/aktualnosci">
                         Aktualności
                     </NavLink>
-                    <NavLink to="/fiszki" activeStyle>
+                    <NavLink to="/fiszki">
                         Fiszki
                     </NavLink>
-                    <NavLink to="/pliki" activeStyle>
+                    <NavLink to="/pliki">
                         Pliki
                     </NavLink>
-                    <NavLink to="/czat" activeStyle>
+                    <NavLink to="/czat">
                         Czat
                     </NavLink>
                     {/* Second Nav */}
@@ -32,17 +38,15 @@ const Navbar = () => {
                 </NavMenu>
                 <NavBtn>
                     <NavBtnLink to="/signup">
-                        Sign Up
+                        Rejestracja
                     </NavBtnLink>
-                </NavBtn>
-                <NavBtn>
                     <NavBtnLink to="/signin">
-                        Sign In
+                        Logowanie
                     </NavBtnLink>
                 </NavBtn>
             </Nav>
         </>
     );
 };
- 
+
 export default Navbar;
