@@ -14,13 +14,11 @@ const Navbar = () => {
         <>
             <Nav>
                 <Bars />
-
                 <Logo to="/">
                     Fiszkord
                 </Logo>
-
+                
                 <NavMenu>
-                    
                     <NavLink to="/aktualnosci">
                         Aktualności
                     </NavLink>
@@ -33,8 +31,6 @@ const Navbar = () => {
                     <NavLink to="/czat">
                         Czat
                     </NavLink>
-                    {/* Second Nav */}
-                    {/* <NavBtnLink to='/sign-in'>Sign In</NavBtnLink> */}
                 </NavMenu>
                 <NavBtn>
                     <NavBtnLink to="/signup">

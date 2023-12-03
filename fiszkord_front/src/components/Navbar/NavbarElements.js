@@ -3,8 +3,6 @@ import { NavLink as Link } from "react-router-dom";
 import styled from "styled-components";
 
 
-// Logo - Fiszkord które jest linkiem do strony głównej i znajduje się po lewej stronie
-
 export const Logo = styled(Link)`
     color: #808080;
     cursor: pointer;
@@ -79,11 +77,12 @@ export const NavBtn = styled.nav`
     }
 `;
 
+
 export const NavBtnLink = styled(Link)`
     border-radius: 4px;
-    background: #808080;
+    background: #fff;
+    color: #808080;
     padding: 10px 22px;
-    color: #000000;
     outline: none;
     border: none;
     cursor: pointer;
@@ -93,7 +92,7 @@ export const NavBtnLink = styled(Link)`
     margin-left: 24px;
     &:hover {
         transition: all 0.2s ease-in-out;
-        background: #fff;
-        color: #808080;
+        background: #808080;
+        color: #000000;
     }
 `;
