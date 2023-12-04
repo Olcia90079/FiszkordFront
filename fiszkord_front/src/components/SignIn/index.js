@@ -32,7 +32,7 @@ const SignIn = () => {
                 return;
             }
 
-            const response = await axios.post('/api/auth/login', {
+            const response = await axios.post('http://localhost:8080/api/auth/login', {
                 email: userEmail,
                 password: userPassword,
             });
