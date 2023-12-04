@@ -1,0 +1,29 @@
+/* Dodaj styl dla kontenera głównego */
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Dodaj styl dla tytułu */
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Dodaj styl dla formularza */
+.form {
+    margin-bottom: 20px;
+}
+
+/* Dodaj styl dla przycisku */
+.button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
