@@ -9,7 +9,8 @@ import {
     Logo,
 } from "./NavbarElements";
 
-const Navbar = () => {
+const Navbar = ({isLoggedIn}) => {
+
     return (
         <>
             <Nav>
@@ -18,7 +19,8 @@ const Navbar = () => {
                     Fiszkord
                 </Logo>
                 
-                <NavMenu>
+                {isLoggedIn && (
+                    <NavMenu>
                     <NavLink to="/aktualnosci">
                         Aktualności
                     </NavLink>
@@ -31,7 +33,7 @@ const Navbar = () => {
                     <NavLink to="/czat">
                         Czat
                     </NavLink>
-                </NavMenu>
+                </NavMenu>)}
                 <NavBtn>
                     <NavBtnLink to="/signup">
                         Rejestracja
