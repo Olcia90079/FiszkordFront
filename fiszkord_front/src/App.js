@@ -6,6 +6,8 @@ import CreateGroup from "./components/Groups/create_group";
 import JoinGroup from './components/Groups/join_group';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
+import Chat from './components/Chat';
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -27,7 +29,7 @@ const App = () => {
             <Route path="/aktualnosci" element={<h1>Aktualności</h1>} />
             <Route path="/fiszki" element={<h1>Fiszki</h1>} />
             <Route path="/pliki" element={<h1>Pliki</h1>} />
-            <Route path="/czat" element={<h1>Czat</h1>} />
+            <Route path="/czat" element={<Chat/>} />
             <Route path="/signup" element={<SignUp/>} />
             <Route path="/signin" element={<SignIn/>} />
             <Route path="/create-group" element={<CreateGroup/>} />
