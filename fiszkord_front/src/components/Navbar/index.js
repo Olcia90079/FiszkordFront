@@ -9,7 +9,7 @@ import {
     Logo,
 } from "./NavbarElements";
 
-const Navbar = ({isLoggedIn}) => {
+const Navbar = ({ isLoggedIn }) => {
 
     return (
         <>
@@ -18,30 +18,31 @@ const Navbar = ({isLoggedIn}) => {
                 <Logo to="/">
                     Fiszkord
                 </Logo>
-                
+
                 {isLoggedIn && (
                     <NavMenu>
-                    <NavLink to="/aktualnosci">
-                        Aktualności
-                    </NavLink>
-                    <NavLink to="/fiszki">
-                        Fiszki
-                    </NavLink>
-                    <NavLink to="/pliki">
-                        Pliki
-                    </NavLink>
-                    <NavLink to="/czat">
-                        Czat
-                    </NavLink>
-                </NavMenu>)}
-                <NavBtn>
-                    <NavBtnLink to="/signup">
-                        Rejestracja
-                    </NavBtnLink>
-                    <NavBtnLink to="/signin">
-                        Logowanie
-                    </NavBtnLink>
-                </NavBtn>
+                        <NavLink to="/aktualnosci">
+                            Aktualności
+                        </NavLink>
+                        <NavLink to="/fiszki">
+                            Fiszki
+                        </NavLink>
+                        <NavLink to="/pliki">
+                            Pliki
+                        </NavLink>
+                        <NavLink to="/czat">
+                            Czat
+                        </NavLink>
+                    </NavMenu>)}
+                {!isLoggedIn && (
+                    <NavBtn>
+                        <NavBtnLink to="/signup">
+                            Rejestracja
+                        </NavBtnLink>
+                        <NavBtnLink to="/signin">
+                            Logowanie
+                        </NavBtnLink>
+                    </NavBtn>)}
             </Nav>
         </>
     );
