@@ -14,13 +14,15 @@ import {
   Route,
 } from "react-router-dom";
 
+import { useSelector } from 'react-redux';
+
 const App = () => {
 
-  const isLoggedIn = true; // Przykładowa wartość do zmiany później
+  const isLoggedIn = useSelector(state => state.isLogged);
 
   return (
     <Router>
-      <Navbar isLoggedIn = {isLoggedIn}/>
+      <Navbar/>
       <div className="app-container">
         {isLoggedIn && <Sidebar />}
         <div className="content">

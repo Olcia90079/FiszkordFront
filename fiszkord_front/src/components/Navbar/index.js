@@ -8,8 +8,11 @@ import {
     NavBtnLink,
     Logo,
 } from "./NavbarElements";
+import { useSelector } from 'react-redux';
 
-const Navbar = ({ isLoggedIn }) => {
+const Navbar = () => {
+    const isLogged = useSelector(state => state.isLogged);
+    console.log("Logged: " + isLogged + " in Navbar");
 
     return (
         <>
@@ -19,7 +22,7 @@ const Navbar = ({ isLoggedIn }) => {
                     Fiszkord
                 </Logo>
 
-                {isLoggedIn && (
+                {isLogged && (
                     <NavMenu>
                         <NavLink to="/aktualnosci">
                             Aktualności
@@ -34,7 +37,7 @@ const Navbar = ({ isLoggedIn }) => {
                             Czat
                         </NavLink>
                     </NavMenu>)}
-                {!isLoggedIn && (
+                {!isLogged && (
                     <NavBtn>
                         <NavBtnLink to="/signup">
                             Rejestracja
@@ -46,6 +49,6 @@ const Navbar = ({ isLoggedIn }) => {
             </Nav>
         </>
     );
-};
+}
 
 export default Navbar;
