@@ -8,8 +8,11 @@ import {
     NavBtnLink,
     Logo,
 } from "./NavbarElements";
+import { useSelector } from 'react-redux';
 
-const Navbar = ({isLoggedIn}) => {
+const Navbar = () => {
+    const isLogged = useSelector(state => state.isLogged);
+    console.log("Logged: " + isLogged + " in Navbar");
 
     return (
         <>
@@ -18,33 +21,34 @@ const Navbar = ({isLoggedIn}) => {
                 <Logo to="/">
                     Fiszkord
                 </Logo>
-                
-                {isLoggedIn && (
+
+                {isLogged && (
                     <NavMenu>
-                    <NavLink to="/aktualnosci">
-                        Aktualności
-                    </NavLink>
-                    <NavLink to="/fiszki">
-                        Fiszki
-                    </NavLink>
-                    <NavLink to="/pliki">
-                        Pliki
-                    </NavLink>
-                    <NavLink to="/czat">
-                        Czat
-                    </NavLink>
-                </NavMenu>)}
-                <NavBtn>
-                    <NavBtnLink to="/signup">
-                        Rejestracja
-                    </NavBtnLink>
-                    <NavBtnLink to="/signin">
-                        Logowanie
-                    </NavBtnLink>
-                </NavBtn>
+                        <NavLink to="/aktualnosci">
+                            Aktualności
+                        </NavLink>
+                        <NavLink to="/fiszki">
+                            Fiszki
+                        </NavLink>
+                        <NavLink to="/pliki">
+                            Pliki
+                        </NavLink>
+                        <NavLink to="/czat">
+                            Czat
+                        </NavLink>
+                    </NavMenu>)}
+                {!isLogged && (
+                    <NavBtn>
+                        <NavBtnLink to="/signup">
+                            Rejestracja
+                        </NavBtnLink>
+                        <NavBtnLink to="/signin">
+                            Logowanie
+                        </NavBtnLink>
+                    </NavBtn>)}
             </Nav>
         </>
     );
-};
+}
 
 export default Navbar;

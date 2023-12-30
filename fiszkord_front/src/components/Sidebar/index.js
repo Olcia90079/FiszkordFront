@@ -1,10 +1,3 @@
-// Sidebar będzie zawierał listę grup, do których należy użytkownik
-// będzie się wyświetlał po lewej stronie ekranu
-// będzie widoczny tylko dla zalogowanych użytkowników
-// będzie zawierał przycisk do tworzenia nowej grupy
-// będzie zawierał przycisk do dołączania do grupy
-// Sidebar.js
-
 import React from 'react';
 import { Link } from 'react-router-dom'; // Jeśli korzystasz z routingu
 import './Sidebar.css'; // Zaimportuj plik ze stylami CSS
@@ -18,6 +11,9 @@ const Sidebar = () => {
   // Wymaga access token jako bearer token.
 
   // Zwraca listę grup, do których należy użytkownik.
+
+
+  // const accessToken = localStorage.getItem('accessToken');
 
   // const userGroups = axios.get('http://localhost:8080/api/group/user-groups', {
   //   headers: {

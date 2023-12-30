@@ -13,12 +13,15 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { validateSignInForm } from './validation';
+import { login } from '../Store/actions';
+import { useDispatch } from 'react-redux';
 
 const SignIn = () => {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
+    const dispatch = useDispatch();
 
     const handleSignIn = async () => {
         try {
@@ -36,14 +39,24 @@ const SignIn = () => {
                 email: userEmail,
                 password: userPassword,
             });
+
+            const { access_token, refresh_token } = response.data;
+
+            localStorage.setItem('accessToken', access_token);
+            localStorage.setItem('refreshToken', refresh_token);
+
+            dispatch(login());
+
             console.log(response);
+            console.log("access_token: " + access_token);
+            console.log("refresh_token: " + refresh_token);
         } catch (error) {
             console.log(error);
         }
     };
 
     return (
-        <div>
+        <div className="container">
             <h2>Sign In</h2>
             <div className="input-group">
                 <input
@@ -52,26 +65,17 @@ const SignIn = () => {
                     value={userEmail}
                     onChange={(e) => setUserEmail(e.target.value)}
                 />
-                {errors.userEmail && <p className="error-message">{errors.userEmail}</p>}
-            </div>
-            <div className="input-group">
                 <input
                     type={showPassword ? 'text' : 'password'}
                     placeholder="Password"
                     value={userPassword}
                     onChange={(e) => setUserPassword(e.target.value)}
                 />
-                <button onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? 'Hide' : 'Show'}
-                </button>
-                {errors.userPassword && <p className="error-message">{errors.userPassword}</p>}
+                <button onClick={handleSignIn}>Sign In</button>
             </div>
-            <button className="sign-in-button" onClick={handleSignIn}>
-                Sign In
-            </button>
         </div>
     );
-};
+}
 
 export default SignIn;
 
