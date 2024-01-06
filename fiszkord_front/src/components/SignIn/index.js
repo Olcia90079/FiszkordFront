@@ -15,6 +15,7 @@ import axios from 'axios';
 import { validateSignInForm } from './validation';
 import { login } from '../Store/actions';
 import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 const SignIn = () => {
     const [userEmail, setUserEmail] = useState('');
@@ -22,6 +23,8 @@ const SignIn = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
     const dispatch = useDispatch();
+
+    const isLogged = useSelector(state => state.isLogged);
 
     const handleSignIn = async () => {
         try {
@@ -56,24 +59,31 @@ const SignIn = () => {
     };
 
     return (
-        <div className="container">
-            <h2>Sign In</h2>
-            <div className="input-group">
-                <input
-                    type="text"
-                    placeholder="Email"
-                    value={userEmail}
-                    onChange={(e) => setUserEmail(e.target.value)}
-                />
-                <input
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Password"
-                    value={userPassword}
-                    onChange={(e) => setUserPassword(e.target.value)}
-                />
-                <button onClick={handleSignIn}>Sign In</button>
-            </div>
-        </div>
+        <>
+            {!isLogged && (
+                <div className="container">
+                <h2>Sign In</h2>
+                <div className="input-group">
+                    <input
+                        type="text"
+                        placeholder="Email"
+                        value={userEmail}
+                        onChange={(e) => setUserEmail(e.target.value)}
+                    />
+                    <input
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Password"
+                        value={userPassword}
+                        onChange={(e) => setUserPassword(e.target.value)}
+                    />
+                    <button onClick={handleSignIn}>Sign In</button>
+                </div>
+            </div>)}
+            {isLogged && (
+                <div className="container">
+                    <h2>Jesteś już zalogowany, czego tutaj szukasz? ;) </h2>
+                </div>)}
+        </>
     );
 }
 

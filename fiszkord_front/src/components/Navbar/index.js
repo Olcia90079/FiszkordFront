@@ -9,10 +9,21 @@ import {
     Logo,
 } from "./NavbarElements";
 import { useSelector } from 'react-redux';
+import { logout } from '../Store/actions';
+import { useDispatch } from 'react-redux';
 
 const Navbar = () => {
     const isLogged = useSelector(state => state.isLogged);
     console.log("Logged: " + isLogged + " in Navbar");
+
+    const dispatch = useDispatch();
+
+    const handleLogout = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+
+        dispatch(logout());
+    };
 
     return (
         <>
@@ -36,7 +47,14 @@ const Navbar = () => {
                         <NavLink to="/czat">
                             Czat
                         </NavLink>
-                    </NavMenu>)}
+                    </NavMenu>
+                )}
+                {isLogged && (
+                    <NavBtn>
+                        <NavBtnLink onClick={handleLogout}>
+                            Wyloguj
+                        </NavBtnLink>
+                    </NavBtn>)}
                 {!isLogged && (
                     <NavBtn>
                         <NavBtnLink to="/signup">
