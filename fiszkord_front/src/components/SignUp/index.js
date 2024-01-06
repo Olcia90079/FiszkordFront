@@ -16,6 +16,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { validateSignUpForm } from './validation';
+import { useSelector } from 'react-redux';
 import './SignUp.css';
 
 const SignUp = () => {
@@ -25,6 +26,8 @@ const SignUp = () => {
     const [userPassword, setUserPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
+
+    const isLogged = useSelector(state => state.isLogged);
 
     const handleSignUp = async () => {
         try {
@@ -54,51 +57,59 @@ const SignUp = () => {
     };
 
     return (
-        <div className="container">
-            <h2>Sign Up</h2>
-            <div className="input-group">
-                <input
-                    type="text"
-                    placeholder="Imię"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                />
-                {errors.firstName && <p className="error-message">{errors.firstName}</p>}
-            </div>
-            <div className="input-group">
-                <input
-                    type="text"
-                    placeholder="Nazwisko"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                />
-                {errors.lastName && <p className="error-message">{errors.lastName}</p>}
-            </div>
-            <div className="input-group">
-                <input
-                    type="text"
-                    placeholder="Email"
-                    value={userEmail}
-                    onChange={(e) => setUserEmail(e.target.value)}
-                />
-                {errors.userEmail && <p className="error-message">{errors.userEmail}</p>}
-            </div>
-            <div className="input-group">
-                <input
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Hasło"
-                    value={userPassword}
-                    onChange={(e) => setUserPassword(e.target.value)}
-                />
-                <button onClick={() => setShowPassword(!showPassword)}>
-                    {showPassword ? 'Hide' : 'Show'}
-                </button>
-                {errors.userPassword && <p className="error-message">{errors.userPassword}</p>}
-            </div>
-            <button className="sign-up-button" onClick={handleSignUp}>
-                Sign Up
-            </button>
-        </div>
+        <>
+            {!isLogged && (
+                <div className="container">
+                    <h2>Sign Up</h2>
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            placeholder="Imię"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                        />
+                        {errors.firstName && <p className="error-message">{errors.firstName}</p>}
+                    </div>
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            placeholder="Nazwisko"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                        />
+                        {errors.lastName && <p className="error-message">{errors.lastName}</p>}
+                    </div>
+                    <div className="input-group">
+                        <input
+                            type="text"
+                            placeholder="Email"
+                            value={userEmail}
+                            onChange={(e) => setUserEmail(e.target.value)}
+                        />
+                        {errors.userEmail && <p className="error-message">{errors.userEmail}</p>}
+                    </div>
+                    <div className="input-group">
+                        <input
+                            type={showPassword ? 'text' : 'password'}
+                            placeholder="Hasło"
+                            value={userPassword}
+                            onChange={(e) => setUserPassword(e.target.value)}
+                        />
+                        <button onClick={() => setShowPassword(!showPassword)}>
+                            {showPassword ? 'Hide' : 'Show'}
+                        </button>
+                        {errors.userPassword && <p className="error-message">{errors.userPassword}</p>}
+                    </div>
+                    <button className="sign-up-button" onClick={handleSignUp}>
+                        Sign Up
+                    </button>
+                </div>)}
+            {isLogged && (
+                <div className="container">
+                    <h2>Jesteś już zalogowany, czego tutaj szukasz? ;) </h2>
+                </div>
+            )}
+        </>
     );
 };
 

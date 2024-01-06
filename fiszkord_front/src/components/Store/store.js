@@ -24,7 +24,7 @@ const userReducer = (state = initialState, action) => {
   }
 };
 
-// Tworzenie sklepu
+// Definiuj store
 const store = configureStore({
   reducer: userReducer
 });

@@ -29,6 +29,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SockJsClient from 'react-stomp';
 import './style.css';
+import { useSelector } from 'react-redux';
 
 const Chat = () => {
 
@@ -37,6 +38,8 @@ const Chat = () => {
     const [subjectId, setSubjectId] = useState(1);
     const [sender, setSender] = useState(1);
     const [timestamp, setTimestamp] = useState('2021-01-01 00:00:00.000');
+
+    const isLogged = useSelector(state => state.isLogged);
 
     useEffect(() => {
         getMessages();
@@ -70,23 +73,31 @@ const Chat = () => {
     };
 
     return (
-        <div className="chat-container">
-            <SockJsClient url='http://localhost:8080/ws' topics={[`/topic/${subjectId}`]} onMessage={handleMessage} />
-            <div className="messages-container">
-                {messages.map((msg, index) => {
-                    return (
-                        <div key={index} className="message">
-                            <div className="message-sender">{msg.sender}</div>
-                            <div className="message-content">{msg.content}</div>
-                        </div>
-                    );
-                })}
-            </div>
-            <div className="input-container">
-                <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
-                <button onClick={sendMessage}>Wyślij</button>
-            </div>
-        </div>
+        <>
+            {isLogged && (
+                <div className="chat-container">
+                    <SockJsClient url='http://localhost:8080/ws' topics={[`/topic/${subjectId}`]} onMessage={handleMessage} />
+                    <div className="messages-container">
+                        {messages.map((msg, index) => {
+                            return (
+                                <div key={index} className="message">
+                                    <div className="message-sender">{msg.sender}</div>
+                                    <div className="message-content">{msg.content}</div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                    <div className="input-container">
+                        <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
+                        <button onClick={sendMessage}>Wyślij</button>
+                    </div>
+                </div>)}
+            {!isLogged && (
+                <div className="container">
+                    <h2>Powinieneś się najpierw zalogować lub zarejestrować, nie sądzisz? ;) </h2>
+                </div>
+            )}
+        </>
     );
 }
 
