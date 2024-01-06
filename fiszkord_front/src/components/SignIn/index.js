@@ -13,15 +13,18 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { validateSignInForm } from './validation';
-import { login } from '../Store/actions';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+import { login } from '../Store/actions';
 
 const SignIn = () => {
     const [userEmail, setUserEmail] = useState('');
     const [userPassword, setUserPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
+
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const isLogged = useSelector(state => state.isLogged);
@@ -49,6 +52,7 @@ const SignIn = () => {
             localStorage.setItem('refreshToken', refresh_token);
 
             dispatch(login());
+            navigate('/aktualnosci');
 
             console.log(response);
             console.log("access_token: " + access_token);

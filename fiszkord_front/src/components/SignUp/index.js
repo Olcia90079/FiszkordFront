@@ -17,6 +17,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { validateSignUpForm } from './validation';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { login } from '../Store/actions';
 import './SignUp.css';
 
 const SignUp = () => {
@@ -26,6 +29,9 @@ const SignUp = () => {
     const [userPassword, setUserPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState({});
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const isLogged = useSelector(state => state.isLogged);
 
@@ -50,7 +56,10 @@ const SignUp = () => {
                 password: userPassword,
                 role: 'USER',
             });
+            dispatch(login());
             console.log(response);
+
+            navigate('/aktualnosci');
         } catch (error) {
             console.log(error);
         }
