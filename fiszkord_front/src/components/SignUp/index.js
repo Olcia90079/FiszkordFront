@@ -56,7 +56,10 @@ const SignUp = () => {
                 password: userPassword,
                 role: 'USER',
             });
-            dispatch(login());
+
+            const { access_token, refresh_token } = response.data;
+            dispatch(login({ access_token, refresh_token }));
+
             console.log(response);
 
             navigate('/aktualnosci');

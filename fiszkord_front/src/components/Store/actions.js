@@ -1,7 +1,8 @@
-export const login = () => {
+export const login = (tokens) => {
     console.log("login action");
     return {
-        type: 'LOGIN'
+        type: 'LOGIN',
+        payload: tokens
     };
 }
 

@@ -12,7 +12,8 @@ const userReducer = (state = initialState, action) => {
       // console.log("login action in reducer");
       return {
         ...state,
-        isLogged: true
+        isLogged: true,
+        tokens: action.payload
       };
     case 'LOGOUT':
       return {
