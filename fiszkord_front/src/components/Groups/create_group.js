@@ -14,19 +14,45 @@ import { useSelector } from 'react-redux';
 
 const CreateGroup = () => {
 
-    const [name, setName] = useState("");
-    const [code, setCode] = useState("");
+    const [name, setName] = useState('');
+    const [code, setCode] = useState('');
 
     const isLogged = useSelector(state => state.isLogged);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('http://localhost:8080/api/group/create', { name: name, code: code }, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } })
-            .then(res => {
-                console.log(res);
-                console.log(res.data);
-            })
-    }
+
+        console.log(name);
+        console.log(code);
+        console.log(localStorage.getItem('access_token'));
+
+        try {
+            const response = await axios.post('http://localhost:8080/api/group/create', {
+                name: name,
+                code: code,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                },
+            });
+
+            console.log(response);
+
+            // Po utworzeniu grupy, wyświetl w console.log() listę grup, do których należy użytkownik.
+
+            // const response2 = axios.get('http://localhost:8080/api/group/user-groups', {
+            //     headers: {
+            //         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+            //     },
+            // });
+
+            // console.log("response2");
+            // console.log(response2);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <>
