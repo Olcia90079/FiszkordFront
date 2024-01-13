@@ -10,12 +10,16 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './join_group.css';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setUserGroups } from '../Store/actions';
 
 const JoinGroup = () => {
 
     const [code, setCode] = useState("");
 
     const isLogged = useSelector(state => state.isLogged);
+
+    const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -28,19 +32,11 @@ const JoinGroup = () => {
                     Authorization: `Bearer ${localStorage.getItem('access_token')}`,
                 },
             });
-
+            
+            dispatch(setUserGroups());
+            
+            console.log((await response).data)
             console.log(response);
-
-            // Po dołączeniu do grupy, wyświetl w console.log() listę grup, do których należy użytkownik.
-
-            // const response2 = axios.get('http://localhost:8080/api/group/user-groups', {
-            //     headers: {
-            //         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-            //     },
-            // });
-
-            // console.log("response2");
-            // console.log(response2);
 
         } catch (error) {
             console.log(error);
@@ -64,7 +60,7 @@ const JoinGroup = () => {
                 <div className="container">
                     <h2>Powinieneś się najpierw zalogować lub zarejestrować, nie sądzisz? ;) </h2>
                 </div>
-            )}
+            )}x
         </>
     );
 }

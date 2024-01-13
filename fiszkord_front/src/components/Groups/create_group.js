@@ -11,11 +11,15 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './create_group.css';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setUserGroups } from '../Store/actions';
 
 const CreateGroup = () => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
+
+    const dispatch = useDispatch();
 
     const isLogged = useSelector(state => state.isLogged);
 
@@ -36,18 +40,8 @@ const CreateGroup = () => {
                 },
             });
 
+            dispatch(setUserGroups());
             console.log(response);
-
-            // Po utworzeniu grupy, wyświetl w console.log() listę grup, do których należy użytkownik.
-
-            // const response2 = axios.get('http://localhost:8080/api/group/user-groups', {
-            //     headers: {
-            //         Authorization: `Bearer ${localStorage.getItem('access_token')}`,
-            //     },
-            // });
-
-            // console.log("response2");
-            // console.log(response2);
             
         } catch (error) {
             console.log(error);
