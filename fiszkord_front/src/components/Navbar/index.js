@@ -35,15 +35,15 @@ const Navbar = () => {
 
                 {isLogged && (
                     <NavMenu>
-                        <NavLink to="/aktualnosci">
+                        {/* <NavLink to="/aktualnosci">
                             Aktualności
-                        </NavLink>
+                        </NavLink> */}
                         <NavLink to="/fiszki">
                             Fiszki
                         </NavLink>
-                        <NavLink to="/pliki">
+                        {/* <NavLink to="/pliki">
                             Pliki
-                        </NavLink>
+                        </NavLink> */}
                         <NavLink to="/czat">
                             Czat
                         </NavLink>

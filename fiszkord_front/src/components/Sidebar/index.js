@@ -2,10 +2,10 @@ import React from 'react';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import './Sidebar.css';
-import axios from 'axios';
 import { FaSync } from 'react-icons/fa';
 import { setUserGroups as refreshGroups } from '../Store/actions';
+import axios from 'axios';
+import './Sidebar.css';
 
 const Sidebar = () => {
   // Lista grup użytkownika
