@@ -11,3 +11,9 @@ export const logout = () => {
         type: 'LOGOUT'
     };
 }
+
+export const setUserGroups = (groups) => {
+    return {
+        type: 'SET_USER_GROUPS',
+    };
+}

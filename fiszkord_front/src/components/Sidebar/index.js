@@ -1,7 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom'; // Jeśli korzystasz z routingu
-import './Sidebar.css'; // Zaimportuj plik ze stylami CSS
-// import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { FaSync } from 'react-icons/fa';
+import { setUserGroups as refreshGroups } from '../Store/actions';
+import axios from 'axios';
+import './Sidebar.css';
 
 const Sidebar = () => {
   // Lista grup użytkownika
@@ -12,25 +16,43 @@ const Sidebar = () => {
 
   // Zwraca listę grup, do których należy użytkownik.
 
+  const flag = useSelector((state) => state.flag);
 
-  // const accessToken = localStorage.getItem('accessToken');
+  const [userGroups, setUserGroups] = useState([]);
 
-  // const userGroups = axios.get('http://localhost:8080/api/group/user-groups', {
-  //   headers: {
-  //     Authorization: `Bearer ${accessToken}`,
-  //   },
-  // });
+  const dispatch = useDispatch();
 
-  const userGroups = ['Grupa 1', 'Grupa 2', 'Grupa 3']; // Przykładowa lista grup
+  useEffect(() => {
+    axios
+      .get('http://localhost:8080/api/group/user-groups', {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setUserGroups(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [flag]);
+
+  const handleRefresh = () => {
+    dispatch(refreshGroups());
+  };
 
   return (
     <div className="sidebar">
       <>
         <div className="group-list">
           <h2>Twoje grupy</h2>
+          <button onClick={handleRefresh} className="refresh-button">
+              <FaSync />
+            </button>
           <ul>
             {userGroups.map((group, index) => (
-              <li key={index}>{group}</li>
+              <li key={index}>{group.name}</li>
             ))}
           </ul>
         </div>
