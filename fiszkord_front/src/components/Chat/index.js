@@ -25,7 +25,7 @@
 
 //     timestamp: Timestamp (String formatu yyyy-mm-dd hh:mm:ss.[fff...])
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef  } from 'react';
 import axios from 'axios';
 import SockJsClient from 'react-stomp';
 import './style.css';
@@ -38,54 +38,133 @@ const Chat = () => {
     const [subjectId, setSubjectId] = useState(1);
     const [sender, setSender] = useState(1);
     const [timestamp, setTimestamp] = useState('2021-01-01 00:00:00.000');
+    const [client, setClient] = useState(null);
+    const [userGroups, setUserGroups] = useState([])
 
     const isLogged = useSelector(state => state.isLogged);
 
     useEffect(() => {
-        getMessages();
+        axios.post('http://localhost:8080/api/group/create', { name: 'chatTest', code: 'TEST123' }, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } })
+        .then(_ => axios.post('http://localhost:8080/api/subject/create-subject', { name: 'chatTestSub', groupId: '1' }, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } }))
+        .catch(e => console.log(e.code))
+        .finally(() => {
+            axios.post('http://localhost:8080/api/group/join', {code: 'TEST123'}, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } })
+            .catch(e => console.log(e))
+            .finally(() => getNewestMessages())
+            axios.get("http://localhost:8080/api/users", { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } }).then(res => {
+                setSender(res.data.id)
+        })
+        })
+        
     }, []);
 
-    const getMessages = () => {
-        axios.get(`http://localhost:8080/api/message/?subjectId=${subjectId}&timestamp=${timestamp}`)
-            .then(res => {
-                setMessages(res.data);
+    useEffect(() => {
+        const fixedDatesMsgs = messages.map(e => ({...e, date: new Date(e.date)}))
+        console.log(fixedDatesMsgs.sort((a, b) => Date.parse(a.date)-Date.parse(b.date)))
+        setMessages(fixedDatesMsgs.sort((a, b) => Date.parse(a.date)-Date.parse(b.date)))
+    }, [messages?.length])
+
+    const getNewestMessages = () => {
+        axios.get(`http://localhost:8080/api/message/?subjectId=${subjectId}`, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } })
+        .then(resMsg => {
+            //setMessages(resMsg.data);
+            console.log(resMsg.data)
+            axios.get("http://localhost:8080/api/group/user-groups", { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } })
+            .then(resGrp => {
+                setUserGroups(resGrp.data)
+                console.log(resGrp)
+                setMessages(resMsg.data.map(m => ({
+                    ...m, 
+                    sender: resGrp.data.find(g => g.code==='TEST123').members.find(u => u.id==m.sender).firstname
+                            +" "
+                            +resGrp.data.find(g => g.code==='TEST123').members.find(u => u.id==m.sender).lastname
+                })))
             })
-            .catch(err => {
-                console.log(err);
-            });
+        })
+        .catch(err => {
+            console.log(err);
+        });
     };
 
+    const loadMoreMessages = () => {
+        const timestamp = messages[0].date
+    }
+
+    console.log()
+
     const sendMessage = () => {
-        axios.post(`http://localhost:8080/app/${subjectId}`, {
-            sender: sender,
-            content: message
-        })
-            .then(res => {
-                console.log(res);
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        client.sendMessage(`/app/${subjectId}`, JSON.stringify({sender: sender, content: message}));
+        setMessage('')
     };
 
     const handleMessage = (msg) => {
-        setMessages([...messages, msg]);
+        const msgSender = userGroups.find(g => g.code==='TEST123').members.find(u => u.id==msg.sender)
+        if (!msgSender) {
+            getNewestMessages()
+            return
+        }
+        setMessages([...messages, {...msg, sender: msgSender.firstname+" "+msgSender.lastname}]);
     };
+
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView()
+    }
+
+    useEffect(() => {
+        scrollToBottom()
+    }, [messages]);
+
+    const dateOptions = {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      };
+
+      function padTo2Digits(num) {
+        return num.toString().padStart(2, '0');
+      }
+      
+      function formatDate(date) {
+        return (
+          [
+            date.getFullYear(),
+            padTo2Digits(date.getMonth() + 1),
+            padTo2Digits(date.getDate()),
+          ].join('-') +
+          ' ' +
+          [
+            padTo2Digits(date.getHours()),
+            padTo2Digits(date.getMinutes()),
+            padTo2Digits(date.getSeconds()),
+          ].join(':')
+        );
+      }
 
     return (
         <>
             {isLogged && (
                 <div className="chat-container">
-                    <SockJsClient url='http://localhost:8080/ws' topics={[`/topic/${subjectId}`]} onMessage={handleMessage} />
+                    <SockJsClient url='http://localhost:8080/ws' 
+                     topics={[`/topic/${subjectId}`]} 
+                     onMessage={handleMessage}
+                     ref={ (c) => { setClient(c) }} 
+                    />
                     <div className="messages-container">
                         {messages.map((msg, index) => {
                             return (
                                 <div key={index} className="message">
-                                    <div className="message-sender">{msg.sender}</div>
+                                    <div>
+                                        <span className="message-sender">{msg.sender}</span>
+                                        <span> {new Date(msg.date).toLocaleTimeString('pl-PL', dateOptions).slice(0, -3)}</span>
+                                    </div>
                                     <div className="message-content">{msg.content}</div>
                                 </div>
                             );
                         })}
+                    <div ref={messagesEndRef} />
                     </div>
                     <div className="input-container">
                         <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
