@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import { login } from '../Store/actions';
+import { useEffect } from 'react';
 
 const SignIn = () => {
     const [userEmail, setUserEmail] = useState('');
@@ -28,6 +29,14 @@ const SignIn = () => {
     const dispatch = useDispatch();
 
     const isLogged = useSelector(state => state.isLogged);
+    const tokens = useSelector(state => state.tokens);
+
+    useEffect(() => {
+        if (isLogged && tokens) {
+            localStorage.setItem('access_token', tokens.access_token);
+            localStorage.setItem('refresh_token', tokens.refresh_token);
+        }
+    }, [isLogged, tokens]);
 
     const handleSignIn = async () => {
         try {
@@ -48,10 +57,7 @@ const SignIn = () => {
 
             const { access_token, refresh_token } = response.data;
 
-            localStorage.setItem('accessToken', access_token);
-            localStorage.setItem('refreshToken', refresh_token);
-
-            dispatch(login());
+            dispatch(login({ access_token, refresh_token }));
             navigate('/aktualnosci');
 
             console.log(response);

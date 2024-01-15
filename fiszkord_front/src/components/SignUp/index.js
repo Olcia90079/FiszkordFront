@@ -14,6 +14,7 @@
 //     refresh_token: String
 
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 import { validateSignUpForm } from './validation';
 import { useSelector } from 'react-redux';
@@ -34,6 +35,14 @@ const SignUp = () => {
     const dispatch = useDispatch();
 
     const isLogged = useSelector(state => state.isLogged);
+    const tokens = useSelector(state => state.tokens);
+
+    useEffect(() => {
+        if (isLogged && tokens) {
+            localStorage.setItem('access_token', tokens.access_token);
+            localStorage.setItem('refresh_token', tokens.refresh_token);
+        }
+    }, [isLogged, tokens]);
 
     const handleSignUp = async () => {
         try {
@@ -56,7 +65,13 @@ const SignUp = () => {
                 password: userPassword,
                 role: 'USER',
             });
-            dispatch(login());
+
+            const { access_token, refresh_token } = response.data;
+            dispatch(login({ access_token, refresh_token }));
+
+            console.log("Access token:" + access_token);
+            console.log("Refresh token:" + refresh_token);
+
             console.log(response);
 
             navigate('/aktualnosci');
