@@ -28,9 +28,9 @@ const App = () => {
         <div className="content">
           <Routes>
             <Route path="/" element={<h1>Home</h1>} />
-            <Route path="/aktualnosci" element={<h1>Aktualności</h1>} />
+            {/* <Route path="/aktualnosci" element={<h1>Aktualności</h1>} /> */}
             <Route path="/fiszki" element={<h1>Fiszki</h1>} />
-            <Route path="/pliki" element={<h1>Pliki</h1>} />
+            {/* <Route path="/pliki" element={<h1>Pliki</h1>} /> */}
             <Route path="/czat" element={<Chat/>} />
             <Route path="/signup" element={<SignUp/>} />
             <Route path="/signin" element={<SignIn/>} />

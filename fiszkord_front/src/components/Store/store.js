@@ -2,7 +2,8 @@ import { configureStore } from '@reduxjs/toolkit';
 
 // Definiuj początkowy stan
 const initialState = {
-  isLogged: false
+  isLogged: false,
+  flag: true
 };
 
 // Definiuj reducer
@@ -20,6 +21,21 @@ const userReducer = (state = initialState, action) => {
         ...state,
         isLogged: false
       };
+    case 'SET_USER_GROUPS':
+      return {
+        ...state,
+        flag: !state.flag
+      };
+    case 'SET_SUBJECT':
+      return {
+        ...state,
+        subjectId: action.payload
+      }
+    case 'SET_GROUP':
+      return {
+        ...state,
+        groupId: action.payload
+      }
     default:
       return state;
   }

@@ -9,35 +9,63 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import './join_group.css';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setUserGroups } from '../Store/actions';
+import { useNavigate } from "react-router-dom";
 
 const JoinGroup = () => {
-    const [groupCode, setGroupCode] = useState('');
 
-    const handleJoinGroup = async () => {
+    const [code, setCode] = useState("");
+
+    const isLogged = useSelector(state => state.isLogged);
+
+    const navigate = useNavigate();
+
+    const dispatch = useDispatch();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
         try {
-            const response = await axios.post('http://localhost:8080/api/group/join', {
-                code: groupCode,
+            const response = axios.post('http://localhost:8080/api/group/join', {
+                code: code
+            }, {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('access_token')}`,
+                },
             });
-            console.log(response);
+            
+            response.then(_ => {
+                dispatch(setUserGroups())
+                navigate('/aktualnosci')
+            })
+
         } catch (error) {
             console.log(error);
         }
-    };
+    }
 
     return (
-        <div className="container">
-            <h2>Join Group</h2>
-            <div className="input-group">
-                <input
-                    type="text"
-                    placeholder="Group Code"
-                    value={groupCode}
-                    onChange={(e) => setGroupCode(e.target.value)}
-                />
-            </div>
-            <button onClick={handleJoinGroup}>Join Group</button>
-        </div>
+        <>
+            {isLogged && (
+                <div className="join-group-container">
+                    <h1>Dołączanie do grupy</h1>
+                    <form onSubmit={handleSubmit}>
+                        <label>
+                            Kod grupy:
+                            <input type="text" name="code" onChange={e => setCode(e.target.value)} />
+                        </label>
+                        <input type="submit" value="Dołącz" />
+                    </form>
+                </div>)}
+            {!isLogged && (
+                <div className="container">
+                    <h2>Powinieneś się najpierw zalogować lub zarejestrować, nie sądzisz? ;) </h2>
+                </div>
+            )}x
+        </>
     );
-};
+}
 
 export default JoinGroup;

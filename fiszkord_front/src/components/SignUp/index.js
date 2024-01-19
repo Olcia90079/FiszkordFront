@@ -20,7 +20,7 @@ import { validateSignUpForm } from './validation';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../Store/actions';
+import { login, setUserGroups } from '../Store/actions';
 import './SignUp.css';
 
 const SignUp = () => {
@@ -68,6 +68,7 @@ const SignUp = () => {
 
             const { access_token, refresh_token } = response.data;
             dispatch(login({ access_token, refresh_token }));
+            dispatch(setUserGroups());
 
             console.log("Access token:" + access_token);
             console.log("Refresh token:" + refresh_token);
