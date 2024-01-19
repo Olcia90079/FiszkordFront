@@ -12,12 +12,15 @@ import axios from 'axios';
 import './create_group.css';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setUserGroups } from '../Store/actions';
+import { setGroup, setSubject, setUserGroups } from '../Store/actions';
+import { useNavigate } from "react-router-dom";
 
 const CreateGroup = () => {
 
     const [name, setName] = useState('');
     const [code, setCode] = useState('');
+
+    const navigate = useNavigate();
 
     const dispatch = useDispatch();
 
@@ -31,7 +34,7 @@ const CreateGroup = () => {
         console.log(localStorage.getItem('access_token'));
 
         try {
-            const response = await axios.post('http://localhost:8080/api/group/create', {
+            const response = axios.post('http://localhost:8080/api/group/create', {
                 name: name,
                 code: code,
             }, {
@@ -40,8 +43,12 @@ const CreateGroup = () => {
                 },
             });
 
-            dispatch(setUserGroups());
-            console.log(response);
+            response.then(_ => {
+                dispatch(setUserGroups())
+                dispatch(setGroup(null))
+                dispatch(setSubject(null))
+                navigate('/aktualnosci')
+            })
             
         } catch (error) {
             console.log(error);

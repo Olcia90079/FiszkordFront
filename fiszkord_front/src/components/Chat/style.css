@@ -27,6 +27,7 @@
   
   .message-sender {
     font-weight: bold;
+    padding-right: 5px;
   }
   
   .input-container {

@@ -26,6 +26,16 @@ const userReducer = (state = initialState, action) => {
         ...state,
         flag: !state.flag
       };
+    case 'SET_SUBJECT':
+      return {
+        ...state,
+        subjectId: action.payload
+      }
+    case 'SET_GROUP':
+      return {
+        ...state,
+        groupId: action.payload
+      }
     default:
       return state;
   }

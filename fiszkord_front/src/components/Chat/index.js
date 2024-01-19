@@ -29,34 +29,41 @@ import React, { useState, useEffect, useRef  } from 'react';
 import axios from 'axios';
 import SockJsClient from 'react-stomp';
 import './style.css';
-import { useSelector } from 'react-redux';
+import { setUserGroups as refreshGroups, setGroup, setSubject } from '../Store/actions';
+import { useSelector, useDispatch } from 'react-redux';
 
 const Chat = () => {
 
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
-    const [subjectId, setSubjectId] = useState(1);
     const [sender, setSender] = useState(1);
     const [timestamp, setTimestamp] = useState('2021-01-01 00:00:00.000');
     const [client, setClient] = useState(null);
     const [userGroups, setUserGroups] = useState([])
 
+    const dispatch = useDispatch();
+    const groupId = useSelector((state) => state.groupId);
+    const subjectId = useSelector((state) => state.subjectId);
+
     const isLogged = useSelector(state => state.isLogged);
 
     useEffect(() => {
-        axios.post('http://localhost:8080/api/group/create', { name: 'chatTest', code: 'TEST123' }, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } })
-        .then(_ => axios.post('http://localhost:8080/api/subject/create-subject', { name: 'chatTestSub', groupId: '1' }, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } }))
+        setMessages([])
+        /*axios.post('http://localhost:8080/api/group/create', { name: 'chatTest', code: 'TEST123' }, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } })
+        .then(_ => axios.post('http://localhost:8080/api/subject/create-subject', { name: 'chatTestSub', groupId: groupId }, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } }))
         .catch(e => console.log(e.code))
         .finally(() => {
             axios.post('http://localhost:8080/api/group/join', {code: 'TEST123'}, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } })
             .catch(e => console.log(e))
-            .finally(() => getNewestMessages())
-            axios.get("http://localhost:8080/api/users", { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } }).then(res => {
-                setSender(res.data.id)
-        })
-        })
+            .finally(() => )
+            
+        })*/
         
-    }, []);
+        axios.get("http://localhost:8080/api/users", { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } }).then(res => {
+                setSender(res.data.id)
+                getNewestMessages()
+        })
+    }, [subjectId]);
 
     useEffect(() => {
         const fixedDatesMsgs = messages.map(e => ({...e, date: new Date(e.date)}))
@@ -65,19 +72,19 @@ const Chat = () => {
     }, [messages?.length])
 
     const getNewestMessages = () => {
-        axios.get(`http://localhost:8080/api/message/?subjectId=${subjectId}`, { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } })
+        axios.get(`http://localhost:8080/api/message/?subjectId=${subjectId}`, { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } })
         .then(resMsg => {
             //setMessages(resMsg.data);
             console.log(resMsg.data)
-            axios.get("http://localhost:8080/api/group/user-groups", { headers: { Authorization: `Bearer ${localStorage.getItem("accessToken")}` } })
+            axios.get("http://localhost:8080/api/group/user-groups", { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } })
             .then(resGrp => {
                 setUserGroups(resGrp.data)
                 console.log(resGrp)
                 setMessages(resMsg.data.map(m => ({
                     ...m, 
-                    sender: resGrp.data.find(g => g.code==='TEST123').members.find(u => u.id==m.sender).firstname
+                    sender: resGrp.data.find(g => g.id==groupId).members.find(u => u.id==m.sender).firstname
                             +" "
-                            +resGrp.data.find(g => g.code==='TEST123').members.find(u => u.id==m.sender).lastname
+                            +resGrp.data.find(g => g.id==groupId).members.find(u => u.id==m.sender).lastname
                 })))
             })
         })
@@ -90,15 +97,13 @@ const Chat = () => {
         const timestamp = messages[0].date
     }
 
-    console.log()
-
     const sendMessage = () => {
         client.sendMessage(`/app/${subjectId}`, JSON.stringify({sender: sender, content: message}));
         setMessage('')
     };
 
     const handleMessage = (msg) => {
-        const msgSender = userGroups.find(g => g.code==='TEST123').members.find(u => u.id==msg.sender)
+        const msgSender = userGroups.find(g => g.id==groupId).members.find(u => u.id==msg.sender)
         if (!msgSender) {
             getNewestMessages()
             return
@@ -158,7 +163,12 @@ const Chat = () => {
                                 <div key={index} className="message">
                                     <div>
                                         <span className="message-sender">{msg.sender}</span>
-                                        <span> {new Date(msg.date).toLocaleTimeString('pl-PL', dateOptions).slice(0, -3)}</span>
+                                        <span> 
+                                            { new Date().toDateString()!==new Date(msg.date).toDateString()
+                                             ? new Date(msg.date).toLocaleTimeString('pl-PL', dateOptions).slice(0, -3)
+                                             : new Date(msg.date).toTimeString().slice(0, 5)
+                                            }
+                                        </span>
                                     </div>
                                     <div className="message-content">{msg.content}</div>
                                 </div>
