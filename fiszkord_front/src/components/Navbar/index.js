@@ -14,8 +14,9 @@ import { useDispatch } from 'react-redux';
 
 const Navbar = () => {
     const isLogged = useSelector(state => state.isLogged);
+    const isSubject = useSelector(state => state.subject?.id)
     console.log("Logged: " + isLogged + " in Navbar");
-
+    console.log(isSubject)
     const dispatch = useDispatch();
 
     const handleLogout = () => {
@@ -38,15 +39,18 @@ const Navbar = () => {
                         {/* <NavLink to="/aktualnosci">
                             Aktualności
                         </NavLink> */}
-                        <NavLink to="/fiszki">
-                            Fiszki
-                        </NavLink>
-                        {/* <NavLink to="/pliki">
-                            Pliki
-                        </NavLink> */}
-                        <NavLink to="/czat">
-                            Czat
-                        </NavLink>
+                        {isSubject &&
+                        <>
+                            <NavLink to="/fiszki">
+                                Fiszki
+                            </NavLink>
+                            {/* <NavLink to="/pliki">
+                                Pliki
+                            </NavLink> */}
+                            <NavLink to="/czat">
+                                Czat
+                            </NavLink>
+                        </>}
                     </NavMenu>
                 )}
                 {isLogged && (

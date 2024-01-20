@@ -18,7 +18,7 @@ const Sidebar = () => {
 
   const flag = useSelector((state) => state.flag);
   const groupId = useSelector((state) => state.groupId);
-  const subjectId = useSelector((state) => state.subjectId);
+  const subjectId = useSelector((state) => state.subject?.id);
 
   const [userGroups, setUserGroups] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -116,7 +116,7 @@ const Sidebar = () => {
                 {groupId===group.id && 
                 <><ul>
                   {subjects.map((sub, index) => (
-                    <li onClick={() => dispatch(setSubject(sub.id))} key={index}>
+                    <li onClick={() => dispatch(setSubject(sub))} key={index}>
                       <Link to="/czat" >
                         {sub.name}
                       </Link>

@@ -43,7 +43,7 @@ const Chat = () => {
 
     const dispatch = useDispatch();
     const groupId = useSelector((state) => state.groupId);
-    const subjectId = useSelector((state) => state.subjectId);
+    const subject = useSelector((state) => state.subject);
 
     const isLogged = useSelector(state => state.isLogged);
 
@@ -63,7 +63,7 @@ const Chat = () => {
                 setSender(res.data.id)
                 getNewestMessages()
         })
-    }, [subjectId]);
+    }, [subject]);
 
     useEffect(() => {
         const fixedDatesMsgs = messages.map(e => ({...e, date: new Date(e.date)}))
@@ -72,7 +72,7 @@ const Chat = () => {
     }, [messages?.length])
 
     const getNewestMessages = () => {
-        axios.get(`http://localhost:8080/api/message/?subjectId=${subjectId}`, { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } })
+        axios.get(`http://localhost:8080/api/message/?subjectId=${subject.id}`, { headers: { Authorization: `Bearer ${localStorage.getItem("access_token")}` } })
         .then(resMsg => {
             //setMessages(resMsg.data);
             console.log(resMsg.data)
@@ -98,7 +98,7 @@ const Chat = () => {
     }
 
     const sendMessage = () => {
-        client.sendMessage(`/app/${subjectId}`, JSON.stringify({sender: sender, content: message}));
+        client.sendMessage(`/app/${subject.id}`, JSON.stringify({sender: sender, content: message}));
         setMessage('')
     };
 
@@ -153,7 +153,7 @@ const Chat = () => {
             {isLogged && (
                 <div className="chat-container">
                     <SockJsClient url='http://localhost:8080/ws' 
-                     topics={[`/topic/${subjectId}`]} 
+                     topics={[`/topic/${subject.id}`]} 
                      onMessage={handleMessage}
                      ref={ (c) => { setClient(c) }} 
                     />

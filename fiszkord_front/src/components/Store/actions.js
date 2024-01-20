@@ -19,10 +19,17 @@ export const setGroup = (id) => {
     };
 }
 
-export const setSubject = (id) => {
+export const setSubject = (sub) => {
     return {
         type: 'SET_SUBJECT',
-        payload: id
+        payload: sub
+    };
+}
+
+export const setDeck = (deck) => {
+    return {
+        type: 'SET_DECK',
+        payload: deck
     };
 }
 
