@@ -58,6 +58,8 @@ const SignIn = () => {
             const { access_token, refresh_token } = response.data;
 
             dispatch(login({ access_token, refresh_token }));
+            localStorage.setItem('access_token', access_token);
+            localStorage.setItem('refresh_token', refresh_token);
             navigate('/aktualnosci');
 
             console.log(response);
